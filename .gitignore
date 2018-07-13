@@ -2,9 +2,11 @@
 
 # dependencies
 /node_modules
-
+.env
 # testing
 /coverage
+
+
 
 # production
 /build
