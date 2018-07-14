@@ -14,6 +14,7 @@ class App extends Component {
     this.state = {
       inventory: [],
       currentProduct: {}
+      
     };
     this.getInventory = this.getInventory.bind(this);
     this.selectProduct = this.selectProduct.bind(this);
@@ -22,8 +23,11 @@ class App extends Component {
     axios.get(`/api/inventory`).then(response => {
       this.setState({
         inventory: response.data
+        
       });
+      console.log(response.data);
     });
+    console.log(this.state);
   }
 
   getInventory() {
@@ -32,12 +36,17 @@ class App extends Component {
         inventory: response.data
       });
     });
+    console.log(this.state);
+    
   }
 
   selectProduct(productToBeEdited) {
     this.setState({
       currentProduct: productToBeEdited
     });
+    
+    console.log(productToBeEdited);
+    console.log(this.state);
   }
 
   render() {
@@ -47,7 +56,7 @@ class App extends Component {
 
         <Link to="/">Dashboard</Link>
         <Link to="/add">Add Inventory</Link>
-
+        
         <Switch>
           <Route
             exact
@@ -61,7 +70,7 @@ class App extends Component {
               />)
             }}
           />
-
+            { console.log(this.state.currentProduct)}
           <Route
             path="/add"
             render={() => {

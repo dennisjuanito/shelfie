@@ -8,7 +8,7 @@ export default class Form extends Component {
       name: "",
       price: 0,
       imgurl: "",
-      currentProductId : null // dunno
+      currentProductId: null // dunno
     };
     this.handleInputName = this.handleInputName.bind(this);
     this.handleInputPrice = this.handleInputPrice.bind(this);
@@ -17,19 +17,19 @@ export default class Form extends Component {
     this.createProduct = this.createProduct.bind(this);
   }
 
-//   componentDidUpdate(prevProps, prevState) {
-//     //   console.log(prevProps,);
-//     //   console.log(this.props);
+  componentDidUpdate(prevProps, prevState) {
+      console.log(prevProps,);
+      console.log(this.props);
 
-//       if (prevProps.currentProduct.id !== this.props.currentProduct.id) {
-//         this.setState({
-//             name: this.props.currentProduct.name,
-//             price: this.props.currentProduct.price,
-//             imgUrl: this.props.currentProduct.img,
-//             currentProductId: this.props.id
-//         });
-//       }
-//   }
+      if (prevProps.currentProduct !== this.props.currentProduct) {
+        this.setState({
+            name: this.props.currentProduct.name,
+            price: this.props.currentProduct.price,
+            imgUrl: this.props.currentProduct.img,
+            currentProductId: this.props.id
+        });
+      }
+  }
   handleInputName(val) {
     this.setState({
       name: val
@@ -53,21 +53,21 @@ export default class Form extends Component {
       name: "",
       price: 0,
       imgurl: "",
-      currentProductId : null
+      currentProductId: null
     });
   }
 
   createProduct() {
-      let {name, price, imgurl} = this.state;
+    let { name, price, imgurl } = this.state;
     let productToAdd = {
-        name: name,
-        price: price,
-        img: imgurl
-    }
+
+      name: name,
+      price: price,
+      img: imgurl
+    };
     axios.post(`/api/product`, productToAdd);
     this.props.getInventory();
     this.handleReset();
-
   }
 
   render() {
@@ -90,10 +90,11 @@ export default class Form extends Component {
           onChange={e => this.handleInputImg(e.target.value)}
         />
         <button onClick={() => this.handleReset()}>Cancel</button>
-        {
-            (this.state.currentProductId) ? <button>Save Changes</button> : <button onClick={() => this.createProduct()}>Add to Inventory</button>
-        }
-       
+        {this.state.currentProductId ? (
+          <button>Save Changes</button>
+        ) : (
+          <button onClick={() => this.createProduct()}>Add to Inventory</button>
+        )}
       </div>
     );
   }

@@ -21,11 +21,11 @@ module.exports = {
       res.status(200).send(result);
     });
   },
-  editProduct: (req, res) => {
-    const dbInstance = req.app.get("db");
-    let { name, price, img, id } = req.params;
-    dbInstance.update_product([name, price, img, id]).then(result => {
-      res.status(200).send(result);
-    });
-  }
+  // editProduct: (req, res) => {
+  //   const dbInstance = req.app.get("db");
+  //   let { name, price, img, id } = req.params;
+  //   dbInstance.update_product([name, price, img, id]).then(result => {
+  //     res.status(200).send(result);
+  //   });
+  // }
 };
