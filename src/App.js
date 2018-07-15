@@ -14,7 +14,6 @@ class App extends Component {
     this.state = {
       inventory: [],
       currentProduct: {}
-      
     };
     this.getInventory = this.getInventory.bind(this);
     this.selectProduct = this.selectProduct.bind(this);
@@ -23,7 +22,6 @@ class App extends Component {
     axios.get(`/api/inventory`).then(response => {
       this.setState({
         inventory: response.data
-        
       });
       console.log(response.data);
     });
@@ -37,14 +35,13 @@ class App extends Component {
       });
     });
     console.log(this.state);
-    
   }
 
   selectProduct(productToBeEdited) {
     this.setState({
       currentProduct: productToBeEdited
     });
-    
+
     console.log(productToBeEdited);
     console.log(this.state);
   }
@@ -53,37 +50,50 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-
         <Link to="/">Dashboard</Link>
         <Link to="/add">Add Inventory</Link>
-        
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => {
-              return (
-              <Dashboard
-                inventory={this.state.inventory}
-                getInventory={this.getInventory}
-                selectProduct={this.selectProduct}
-              />)
-            }}
-          />
-            { console.log(this.state.currentProduct)}
-          <Route
-            path="/add"
-            render={() => {
-              return(
-              <Form
-                getInventory={this.getInventory}
-                currentProduct={this.state.currentProduct}
-              />)
-            }}
-          />
 
+        <Router>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <Dashboard
+                  inventory={this.state.inventory}
+                  getInventory={this.getInventory}
+                  selectProduct={this.selectProduct}
+                />
+              )}
+            />
 
-        </Switch>
+            {console.log(this.state.currentProduct)}
+           
+
+            <Route
+              path="/edit/:id"
+              render={(historyProps) => {
+                return (<Form
+                  getInventory={this.getInventory}
+                  currentProduct={this.state.currentProduct}
+                  {...historyProps}
+                />)
+              }}
+            />
+
+             <Route
+              path="/add"
+              render={(historyProps) => (
+                <Form
+                  getInventory={this.getInventory}
+                  currentProduct={this.state.currentProduct}
+                  {...historyProps}
+                />
+              )}
+            />
+
+          </Switch>
+        </Router>
       </div>
     );
   }

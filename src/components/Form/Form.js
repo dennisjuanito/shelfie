@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 
 export default class Form extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: "",
       price: 0,
@@ -18,17 +18,21 @@ export default class Form extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-      console.log(prevProps,);
-      console.log(this.props);
+    console.log(prevProps);
+    console.log(this.props);
+    // console.log(prevProps.currentProduct.id);
+    // console.log(this.props.match.params.id);
 
-      if (prevProps.currentProduct !== this.props.currentProduct) {
-        this.setState({
-            name: this.props.currentProduct.name,
-            price: this.props.currentProduct.price,
-            imgUrl: this.props.currentProduct.img,
-            currentProductId: this.props.id
-        });
-      }
+    
+    if (+prevProps.currentProduct.id !== +this.props.currentProduct.id) {
+      this.setState({
+        name: this.props.currentProduct.name,
+        price: this.props.currentProduct.price,
+        imgurl: this.props.currentProduct.img,
+        currentProductId: this.props.currentProduct.id
+      });
+    }
+
   }
   handleInputName(val) {
     this.setState({
@@ -60,7 +64,6 @@ export default class Form extends Component {
   createProduct() {
     let { name, price, imgurl } = this.state;
     let productToAdd = {
-
       name: name,
       price: price,
       img: imgurl
@@ -68,6 +71,16 @@ export default class Form extends Component {
     axios.post(`/api/product`, productToAdd);
     this.props.getInventory();
     this.handleReset();
+  }
+
+  updateProduct() {
+    let updatedProduct = {
+      name: this.state.name,
+      price: this.state.price,
+      img: this.state.imgurl
+    };
+    axios.put(`/api/inventory/${this.state.currentProductId}`, updatedProduct);
+    this.props.getInventory();
   }
 
   render() {
@@ -91,7 +104,7 @@ export default class Form extends Component {
         />
         <button onClick={() => this.handleReset()}>Cancel</button>
         {this.state.currentProductId ? (
-          <button>Save Changes</button>
+          <button onClick={() => this.updateProduct()}>Save Changes</button>
         ) : (
           <button onClick={() => this.createProduct()}>Add to Inventory</button>
         )}

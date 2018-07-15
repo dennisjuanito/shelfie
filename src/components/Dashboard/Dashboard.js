@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Product from "../Product/Product";
 import axios from "axios";
+import {Link} from 'react-router-dom';
 
 export default class Dashboard extends Component {
   constructor() {
@@ -26,7 +27,7 @@ export default class Dashboard extends Component {
               img={productImage}
             />
             <button onClick={() => this.removeProduct(product.id)}>Delete</button>
-            <button onClick={() => this.props.selectProduct(product)}>Edit</button>
+            <Link to={`/edit/${product.id}`}><button onClick={() => this.props.selectProduct(product)}>Edit</button></Link>
           </div>
         );
       });
