@@ -9,42 +9,8 @@ import routes from "./routes.js";
 import axios from "axios";
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      inventory: [],
-      currentProduct: {}
-    };
-    this.getInventory = this.getInventory.bind(this);
-    this.selectProduct = this.selectProduct.bind(this);
-  }
-  componentDidMount() {
-    axios.get(`/api/inventory`).then(response => {
-      this.setState({
-        inventory: response.data
-      });
-      console.log(response.data);
-    });
-    console.log(this.state);
-  }
 
-  getInventory() {
-    axios.get(`/api/inventory`).then(response => {
-      this.setState({
-        inventory: response.data
-      });
-    });
-    console.log(this.state);
-  }
 
-  selectProduct(productToBeEdited) {
-    this.setState({
-      currentProduct: productToBeEdited
-    });
-
-    console.log(productToBeEdited);
-    console.log(this.state);
-  }
 
   render() {
     return (
@@ -60,22 +26,14 @@ class App extends Component {
               path="/"
               render={() => (
                 <Dashboard
-                  inventory={this.state.inventory}
-                  getInventory={this.getInventory}
-                  selectProduct={this.selectProduct}
                 />
               )}
             />
-
-            {console.log(this.state.currentProduct)}
            
-
             <Route
               path="/edit/:id"
               render={(historyProps) => {
                 return (<Form
-                  getInventory={this.getInventory}
-                  currentProduct={this.state.currentProduct}
                   {...historyProps}
                 />)
               }}
@@ -85,8 +43,6 @@ class App extends Component {
               path="/add"
               render={(historyProps) => (
                 <Form
-                  getInventory={this.getInventory}
-                  currentProduct={this.state.currentProduct}
                   {...historyProps}
                 />
               )}

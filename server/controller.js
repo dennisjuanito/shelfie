@@ -10,6 +10,17 @@ module.exports = {
       })
       .catch(err => res.status(404).send(err));
   },
+  getInventoryById: (req, res) => {
+    const dbInstance = req.app.get("db");
+    let { id } = req.params;
+    dbInstance
+      .get_inventory_by_id([id])
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => res.status(404).send(err));
+  },
+
   createProduct: (req, res) => {
     const dbInstance = req.app.get("db");
     let { name, price, img } = req.body;

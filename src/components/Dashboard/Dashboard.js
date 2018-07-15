@@ -7,17 +7,41 @@ export default class Dashboard extends Component {
   constructor() {
     super();
     this.removeProduct = this.removeProduct.bind(this);
+    this.state = {
+      inventory: []
+    }
+    this.getInventory = this.getInventory.bind(this);
   }
+
+  componentDidMount() {
+    axios.get(`/api/inventory`).then(response => {
+      this.setState({
+        inventory: response.data
+      });
+      console.log(response.data);
+    });
+  }
+
 
   removeProduct(id) {
       axios.delete(`/api/inventory/${id}`)
-      this.props.getInventory();
+      this.getInventory();
   }
+
+  getInventory() {
+    axios.get(`/api/inventory`).then(response => {
+      this.setState({
+        inventory: response.data
+      });
+    });
+    console.log(this.state);
+  }
+
 
  
   render() {
     let displayInventory = ()  =>  {
-      return this.props.inventory.map(product => {
+      return this.state.inventory.map(product => {
         let productImage = (product.img) ? product.img : "https://png.icons8.com/ios/1600/no-camera.png";
         return (
           <div key={product.id}>
@@ -27,7 +51,7 @@ export default class Dashboard extends Component {
               img={productImage}
             />
             <button onClick={() => this.removeProduct(product.id)}>Delete</button>
-            <Link to={`/edit/${product.id}`}><button onClick={() => this.props.selectProduct(product)}>Edit</button></Link>
+            <Link to={`/edit/${product.id}`}><button>Edit</button></Link>
           </div>
         );
       });

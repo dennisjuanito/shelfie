@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 export default class Form extends Component {
   constructor(props) {
@@ -15,25 +16,57 @@ export default class Form extends Component {
     this.handleInputImg = this.handleInputImg.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.createProduct = this.createProduct.bind(this);
+    this.getProduct = this.getProduct.bind(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps);
-    console.log(this.props);
-    // console.log(prevProps.currentProduct.id);
-    // console.log(this.props.match.params.id);
+  
+
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log(prevProps);
+  //   console.log(this.props);
+  //   // console.log(prevProps.currentProduct.id);
+  //   // console.log(this.props.match.params.id);
 
     
-    if (+prevProps.currentProduct.id !== +this.props.currentProduct.id) {
-      this.setState({
-        name: this.props.currentProduct.name,
-        price: this.props.currentProduct.price,
-        imgurl: this.props.currentProduct.img,
-        currentProductId: this.props.currentProduct.id
-      });
-    }
+  //   if (+prevProps.currentProduct.id !== +this.props.currentProduct.id) {
+  //     this.setState({
+  //       name: this.props.currentProduct.name,
+  //       price: this.props.currentProduct.price,
+  //       imgurl: this.props.currentProduct.img,
+  //       currentProductId: this.props.currentProduct.id
+  //     });
+  //   }
 
+  // }
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps);
+    console.log(this.Props);
+    if (prevProps !== this.props) {
+      this.handleReset();
+    }
+    
   }
+
+  getProduct(id) {
+    axios.get(`/api/inventory/${id}`).then(response => {
+ 
+      this.handleInputName(response.data[0].name);
+      this.handleInputPrice(response.data[0].price);
+      this.handleInputImg(response.data[0].img);
+      this.setState({
+        currentProductId: response.data[0].id
+      });
+    });;
+  }
+
+  componentDidMount() {
+      this.getProduct(this.props.match.params.id);
+  
+    
+  }
+
+
   handleInputName(val) {
     this.setState({
       name: val
@@ -69,7 +102,7 @@ export default class Form extends Component {
       img: imgurl
     };
     axios.post(`/api/product`, productToAdd);
-    this.props.getInventory();
+    // this.props.getInventory();
     this.handleReset();
   }
 
@@ -80,7 +113,6 @@ export default class Form extends Component {
       img: this.state.imgurl
     };
     axios.put(`/api/inventory/${this.state.currentProductId}`, updatedProduct);
-    this.props.getInventory();
   }
 
   render() {
@@ -104,7 +136,7 @@ export default class Form extends Component {
         />
         <button onClick={() => this.handleReset()}>Cancel</button>
         {this.state.currentProductId ? (
-          <button onClick={() => this.updateProduct()}>Save Changes</button>
+          <Link to="/"><button onClick={() => this.updateProduct()}>Save Changes</button></Link>
         ) : (
           <button onClick={() => this.createProduct()}>Add to Inventory</button>
         )}

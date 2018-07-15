@@ -13,9 +13,11 @@ app.use(bodyParser.json());
 
 // end points
 app.get(`/api/inventory`, controller.getInventory);
+app.get(`/api/inventory/:id`, controller.getInventoryById);
 app.post(`/api/product`, controller.createProduct);
 app.delete(`/api/inventory/:id`, controller.deleteInventory);
 app.put(`/api/inventory/:id`, controller.editProduct);
+
 
 let { connectingString } = process.env;
 
