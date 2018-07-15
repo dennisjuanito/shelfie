@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default class Form extends Component {
   constructor(props) {
@@ -19,16 +19,12 @@ export default class Form extends Component {
     this.getProduct = this.getProduct.bind(this);
   }
 
-  
-
-
   // componentDidUpdate(prevProps, prevState) {
   //   console.log(prevProps);
   //   console.log(this.props);
   //   // console.log(prevProps.currentProduct.id);
   //   // console.log(this.props.match.params.id);
 
-    
   //   if (+prevProps.currentProduct.id !== +this.props.currentProduct.id) {
   //     this.setState({
   //       name: this.props.currentProduct.name,
@@ -45,27 +41,22 @@ export default class Form extends Component {
     if (prevProps !== this.props) {
       this.handleReset();
     }
-    
   }
 
   getProduct(id) {
     axios.get(`/api/inventory/${id}`).then(response => {
- 
       this.handleInputName(response.data[0].name);
       this.handleInputPrice(response.data[0].price);
       this.handleInputImg(response.data[0].img);
       this.setState({
         currentProductId: response.data[0].id
       });
-    });;
+    });
   }
 
   componentDidMount() {
-      this.getProduct(this.props.match.params.id);
-  
-    
+    this.getProduct(this.props.match.params.id);
   }
-
 
   handleInputName(val) {
     this.setState({
@@ -136,7 +127,9 @@ export default class Form extends Component {
         />
         <button onClick={() => this.handleReset()}>Cancel</button>
         {this.state.currentProductId ? (
-          <Link to="/"><button onClick={() => this.updateProduct()}>Save Changes</button></Link>
+          <Link to="/">
+            <button onClick={() => this.updateProduct()}>Save Changes</button>
+          </Link>
         ) : (
           <button onClick={() => this.createProduct()}>Add to Inventory</button>
         )}
